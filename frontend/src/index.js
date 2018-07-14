@@ -1,59 +1,28 @@
-import React from 'react';
-import ReactDOM from 'react-dom';
-import './index.css';
+import React from "react"
+import ReactDOM from "react-dom"
+import MainView from "./MainView"
+import "./index.css"
 
+/*
+fetch(`URL/input?key=value&key=value`, {credentials:include, headers{"Content-type": "application/json"}, method: "GET"})
+*/
 
-class SelectionButton extends React.Component{
-	
-    constructor(props){
-	super(props);
-	this.handleClick = this.handleClick.bind(this);
+class Main extends React.Component {
+    BUTTONS = ["Front Grass", "Back Grass", "Front Lights", "Back Lights", "Front Flower Bed", "Back Flower Bed"]
+    state = {
+        buttonStates: [false, false, false, false, false, false]
     }
 
-    handleClick(event){
-	event.preventDefault();
-	this.props.handleClick(this.props.text);
+    handleButtonToggle = (event, button) => {
+        console.log(button)
+        let tempState = this.state.buttonStates.slice()
+        tempState[this.BUTTONS.indexOf(button)] = !this.state.buttonStates[this.BUTTONS.indexOf(button)]
+        this.setState({ buttonStates: tempState })
     }
 
-    render(){
-	return <button disabled = {this.props.state} onClick = {(event) => this.handleClick(event)}>{this.props.text}</button>
-    }
-}
-
-class Main extends React.Component{
-    
-    constructor(props){
-	super(props);
-	this.state = {
-	    BUTTONS: ["Front Grass", "Back Grass", "Front Lights", "Back Lights"],
-	    buttonStates: [false, false, false, false],
-	}
-	this.handleButtonToggle = this.handleButtonToggle.bind(this);
-    }
-
-    handleButtonToggle(button){
-	console.log(button);
-	let tempState = this.state.buttonStates.slice();
-	tempState[this.state.BUTTONS.indexOf(button)] = !this.state.buttonStates[this.state.BUTTONS.indexOf(button)];
-	this.setState({buttonStates: tempState});
-    }
-    
-    render(){
-	return(
-	    this.state.BUTTONS.map((item, index) => {
-		return(
-		    <SelectionButton
-			state = {this.state.buttonStates[index]}
-			key = {index}
-			handleClick = {this.handleButtonToggle}
-			text = {item}
-		    />
-		)
-	    })
-	)
+    render() {
+        return <MainView buttons={this.BUTTONS} buttonStates={this.state.buttonStates} handleButtonToggle={this.handleButtonToggle} />
     }
 }
 
-
-ReactDOM.render(<Main/>, document.getElementById('root'));
-
+ReactDOM.render(<Main />, document.getElementById("root"))
