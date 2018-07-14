@@ -25,11 +25,7 @@ class SelectionButton extends React.Component {
 
 class StatusView extends React.Component {
     drawSelector(state, handleClick, text) {
-        return (
-            <div className="switch-panel">
-                <Switch checked={state} label={text} onChange={event => handleClick(event, text)} />
-            </div>
-        )
+        return <Switch checked={state} label={text} onChange={event => handleClick(event, text)} />
     }
 
     render() {
@@ -39,7 +35,11 @@ class StatusView extends React.Component {
                     <h3>Status</h3>
                 </div>
                 {this.props.buttons.map((item, index) => {
-                    return this.drawSelector(this.props.buttonStates[index], this.props.handleButtonToggle, item)
+                    return (
+                        <div key={index} className="switch-panel">
+                            {this.drawSelector(this.props.buttonStates[index], this.props.handleButtonToggle, item)}
+                        </div>
+                    )
                 })}
             </div>
         )
