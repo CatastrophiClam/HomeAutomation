@@ -9,7 +9,8 @@ fetch(`URL/input?key=value&key=value`, {credentials:include, headers{"Content-ty
 
 class Main extends React.Component {
     BUTTONS = ["Front Grass", "Back Grass", "Front Lights", "Back Lights", "Front Flower Bed", "Back Flower Bed"]
-    SERVER_URL = "http://127.0.0.1:5000/"
+    BUTTON_SQL_NAMES = ["FrontGrass", "BackGrass", "FrontLights", "BackLights", "FrontFlowerbed", "BackFlowerbed"]
+    SERVER_URL = "http://192.168.5.83:5000/"
     state = {
         buttonStates: [false, false, false, false, false, false]
     }
@@ -17,11 +18,12 @@ class Main extends React.Component {
     handleButtonToggle = (event, button) => {
         let tempState = this.state.buttonStates.slice()
         tempState[this.BUTTONS.indexOf(button)] = !this.state.buttonStates[this.BUTTONS.indexOf(button)]
-        fetch(`${this.SERVER_URL}input?component=${button}&state=${tempState[this.BUTTONS.indexOf(button)] ? 1 : 0}`, {
-            credentials: "include",
-            headers: { "Content-type": "application/json" },
-            method: "GET"
-        })
+        fetch(
+            `${this.SERVER_URL}input?component=${this.BUTTON_SQL_NAMES[this.BUTTONS.indexOf(button)]}&state=${tempState[this.BUTTONS.indexOf(button)] ? 1 : 0}`,
+            {
+                method: "GET"
+            }
+        )
             .then(answer => {
                 console.log(answer)
                 return answer.json()
